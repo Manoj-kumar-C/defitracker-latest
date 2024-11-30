@@ -1,7 +1,9 @@
+import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { auth } from '../../firebase';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'expo-router';
+import Icon from 'react-native-vector-icons/FontAwesome'; // Importing FontAwesome icons
 
 export default function Home() {
   const router = useRouter();
@@ -13,69 +15,59 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to the Defi Tracker . Finance at its Best.</Text>
+      <Text style={styles.title}>Welcome to the Defi Tracker. Finance at its Best.</Text>
 
-      <View style={styles.buttonsContainer}>
+      {/* First Row of Buttons */}
+      <View style={styles.buttonsRow}>
         <TouchableOpacity
           style={styles.serviceButton}
-          onPress={() => router.push('/home/service1')}
+          onPress={() => router.push('/home/tools/budgetplanner')}
         >
+          <Icon name="calculator" size={20} color="#fff" style={styles.icon} />
           <Text style={styles.buttonText}>Budget Planner</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.serviceButton}
-          onPress={() => router.push('/home/service2')}
+          onPress={() => router.push('/home/tools/visualcharts')}
         >
+          <Icon name="pie-chart" size={20} color="#fff" style={styles.icon} />
           <Text style={styles.buttonText}>Visual Charts</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.serviceButton}
-          onPress={() => router.push('/home/service3')}
+          onPress={() => router.push('/home/tools/news')}
         >
-          <Text style={styles.buttonText}>Market News & Alerts</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/service1')}
-        >
-          <Text style={styles.buttonText}>loan Calculator</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/service2')}
-        >
-          <Text style={styles.buttonText}>Credit Score Calculator</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/service3')}
-        >
-          <Text style={styles.buttonText}>Youtube Channel</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/service1')}
-        >
-          <Text style={styles.buttonText}>Service 1</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/service2')}
-        >
-          <Text style={styles.buttonText}>Service 2</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/service3')}
-        >
-          <Text style={styles.buttonText}>Service 3</Text>
+          <Icon name="bell" size={20} color="#fff" style={styles.icon} />
+          <Text style={styles.buttonText}>Market News</Text>
         </TouchableOpacity>
       </View>
 
+      {/* Second Row of Buttons */}
+      <View style={styles.buttonsRow}>
+        <TouchableOpacity
+          style={styles.serviceButton}
+          onPress={() => router.push('/home/tools/loancalculator')}
+        >
+          <Icon name="calculator" size={20} color="#fff" style={styles.icon} />
+          <Text style={styles.buttonText}>Loan Calculator</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.serviceButton}
+          onPress={() => router.push('/home/tools/creditscore')}
+        >
+          <Icon name="credit-card" size={20} color="#fff" style={styles.icon} />
+          <Text style={styles.buttonText}>Credit Score</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.serviceButton}
+          onPress={() => router.push('/home/tools/ytchannels')}
+        >
+          <Icon name="youtube" size={20} color="#fff" style={styles.icon} />
+          <Text style={styles.buttonText}>YouTube Channel</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Sign Out Button */}
       <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
         <Text style={styles.signOutText}>Sign Out</Text>
       </TouchableOpacity>
@@ -97,7 +89,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 30,
   },
-  buttonsContainer: {
+  buttonsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 30,
   },
   serviceButton: {
@@ -105,12 +99,18 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
-    marginBottom: 15,
+    flex: 1,
+    marginHorizontal: 5,
+    justifyContent: 'center',
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
+    marginTop: 5,
+  },
+  icon: {
+    marginBottom: 5,
   },
   signOutButton: {
     backgroundColor: '#ff4d4d',
@@ -125,3 +125,4 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+

@@ -1,12 +1,110 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { auth } from '../../firebase';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { useNavigation } from '@react-navigation/native';  // Import useNavigation hook
 
-const forgot = () => {
+export default function ForgotPasswordScreen() {
+  const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigation = useNavigation(); // Access the navigation object
+
+  const handlePasswordReset = async () => {
+    if (!email) {
+      Alert.alert('Please enter your email');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      Alert.alert('Password Reset Email Sent!', 'Check your inbox to reset your password.');
+      //navigation.navigate('/auth/signin'); // Use navigation to redirect to the Signin screen
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'There was an issue sending the password reset email. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <View>
-      <Text>forgot</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Forgot Password</Text>
+      <Text style={styles.subtitle}>Enter your email to receive a password reset link.</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Enter your email"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+      />
+
+      <TouchableOpacity
+        style={styles.resetButton}
+        onPress={handlePasswordReset}
+        disabled={isLoading}
+      >
+        <Text style={styles.buttonText}>{isLoading ? 'Sending...' : 'Send Reset Link'}</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <Text style={styles.backText}>Back to Sign In</Text>
+      </TouchableOpacity>
     </View>
-  )
+  );
 }
 
-export default forgot
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: '#f7f8fa',
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#777',
+    textAlign: 'center',
+    marginBottom: 30,
+  },
+  input: {
+    height: 50,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingLeft: 10,
+    marginBottom: 20,
+    fontSize: 16,
+  },
+  resetButton: {
+    backgroundColor: '#007bff',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  backButton: {
+    alignItems: 'center',
+  },
+  backText: {
+    color: '#007bff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+});
