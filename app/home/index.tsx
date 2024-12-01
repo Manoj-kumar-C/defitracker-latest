@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { auth } from '../../firebase';
 import { signOut } from 'firebase/auth';
@@ -7,10 +7,15 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function Home() {
   const router = useRouter();
+  const [showNotification, setShowNotification] = useState(false);
 
   const handleSignOut = async () => {
     await signOut(auth);
     router.replace('/auth/signin');
+  };
+
+  const handleNotificationPress = () => {
+    setShowNotification(!showNotification); // Toggle the notification message
   };
 
   return (
@@ -18,12 +23,32 @@ export default function Home() {
       {/* Top Bar */}
       <View style={styles.topBar}>
         <Text style={styles.topBarTitle}>Defi Tracker</Text>
-        <TouchableOpacity
-          style={styles.profileButton}
-          onPress={() => router.push('/settings')}
-        >
-          <Icon name="user-circle" size={24} color="#fff" />
-        </TouchableOpacity>
+
+        {/* Notification and Profile Icons at the Right */}
+        <View style={styles.iconsContainer}>
+          {/* Profile Button */}
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={() => router.push('/settings')}
+          >
+            <Icon name="user-circle" size={24} color="#fff" />
+          </TouchableOpacity>
+
+          {/* Notification Icon */}
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={handleNotificationPress}
+          >
+            <Icon name="bell" size={24} color="#fff" />
+          </TouchableOpacity>
+
+          {/* Notification Message */}
+          {showNotification && (
+            <View style={styles.notificationMessage}>
+              <Text style={styles.notificationText}>You have new notifications!</Text>
+            </View>
+          )}
+        </View>
       </View>
 
       <Text style={styles.subtitle}>Finance at its Best</Text>
@@ -101,8 +126,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f7f8fa',
-    
-    
   },
   topBar: {
     backgroundColor: '#000000',
@@ -110,15 +133,33 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 15,
-    
   },
   topBarTitle: {
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+    flex: 1,  // Take up the remaining space to push icons to the right
   },
-  profileButton: {
+  iconsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  iconButton: {
     padding: 5,
+    marginLeft: 15, // Add space between icons
+  },
+  notificationMessage: {
+    position: 'absolute',
+    top: 40,
+    right: 0,
+    backgroundColor: '#ff9800',
+    padding: 8,
+    borderRadius: 5,
+    zIndex: 1000,
+  },
+  notificationText: {
+    color: '#fff',
+    fontSize: 14,
   },
   subtitle: {
     fontSize: 22,
