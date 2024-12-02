@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import { auth } from '../../firebase';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'expo-router';
@@ -22,6 +22,7 @@ export default function Home() {
   };
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       {/* Top Bar */}
       <View style={styles.topBar}>
@@ -34,7 +35,7 @@ export default function Home() {
             style={styles.iconButton}
             onPress={() => router.push('/settings')}
           >
-            <Icon name="user-circle" size={30} color="black" />
+            <Icon name="user-circle" size={30} color="#5DBB63" />
           </TouchableOpacity>
 
           {/* Notification Icon */}
@@ -42,7 +43,7 @@ export default function Home() {
             style={styles.iconButton}
             onPress={handleNotificationPress}
           >
-            <Icon name="bell" size={30} color="black" />
+            <Icon name="bell" size={30} color="#5DBB63" />
           </TouchableOpacity>
 
           {/* Notification Message */}
@@ -71,16 +72,7 @@ export default function Home() {
           )}
         />
       </View>
-      <Text></Text>
-      <Text></Text>
-      <Text></Text>
-      <Text></Text>
-      <Text></Text>
-      <Text></Text>
-      <Text></Text>
-      <Text></Text>
-      <Text></Text>
-      <Text></Text>
+
       <Text style={styles.subtitle}>Our Tools</Text>
 
       {/* Two Buttons Per Row */}
@@ -146,27 +138,48 @@ export default function Home() {
           <Icon name="comments" size={24} color="#fff" />
           <Text style={styles.buttonText}>AI Chat Assistance</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.serviceButton}
+          onPress={() => router.push('/home/tools/ytchannels')}
+        >
+          <Icon name="youtube" size={24} color="#fff" />
+          <Text style={styles.buttonText}>Insurance</Text>
+        </TouchableOpacity>
+        
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.serviceButton}
+          onPress={() => router.push('/home/tools/chatwithai')}
+        >
+          <Icon name="comments" size={24} color="#fff" />
+          <Text style={styles.buttonText}>Consulting</Text>
+        </TouchableOpacity>
         <View style={styles.emptyButtonPlaceholder} />
       </View>
     </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7f8fa',
+    backgroundColor: '#F8F9FA',
     paddingBottom: 20, // Padding for bottom components
   },
   topBar: {
-    backgroundColor: 'white',
+    backgroundColor: '#ffffff',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E5E5',
   },
   topBarTitle: {
-    color: 'black',
+    color: '#2C3E50',
     fontSize: 24,
     fontWeight: 'bold',
     flex: 1,  // Take up the remaining space to push icons to the right
@@ -176,20 +189,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconButton: {
-    padding: 5,
+    padding: 10,
     marginLeft: 15, // Add space between icons
+    backgroundColor: '#E3F2FD', // Soft blue background
+    borderRadius: 50,
+    elevation: 3,
   },
   notificationMessage: {
     position: 'absolute',
     top: 40,
     right: 0,
-    backgroundColor: '#ff9800',
+    backgroundColor: '#FFEB3B',
     padding: 8,
     borderRadius: 5,
     zIndex: 1000,
   },
   notificationText: {
-    color: '#fff',
+    color: '#212121',
     fontSize: 14,
   },
   carouselContainer: {
@@ -200,12 +216,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ccc',
+    backgroundColor: '#76D7C4', // Soft green
     borderRadius: 10,
   },
   carouselText: {
     fontSize: 30,
-    color: '#fff',
+    color: '#ffffff',
   },
   subtitle: {
     fontSize: 22,
@@ -218,10 +234,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 20,
+    paddingHorizontal: 10,
   },
   serviceButton: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: '#5DBB63', // Teal background
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
@@ -230,14 +247,14 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
-    elevation: 3,
+    elevation: 5,
   },
   emptyButtonPlaceholder: {
     flex: 1,
     marginHorizontal: 5,
   },
   buttonText: {
-    color: '#fff',
+    color: '#ffffff',
     fontSize: 14,
     fontWeight: '600',
     marginTop: 10,
