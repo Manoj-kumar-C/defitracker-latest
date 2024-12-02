@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { useRouter } from 'expo-router';
@@ -32,6 +32,11 @@ export default function SignUp() {
 
   return (
     <View style={styles.container}>
+      <Image 
+        source={require('../../assets/images/auth/sign-up.png')}
+        style={styles.image} 
+        resizeMode="contain" 
+      />
       <Text style={styles.title}>Create an Account</Text>
       <View style={styles.card}>
         {error ? <Text style={styles.error}>{error}</Text> : null}
@@ -73,41 +78,52 @@ export default function SignUp() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7f8fa',
+    backgroundColor: '#f0f2f5',
     justifyContent: 'center',
     padding: 20,
   },
+  image: {
+    width: '100%',
+    height: 150,
+    marginBottom: 20,
+  },
   title: {
-    fontSize: 28,
-    fontWeight: 'bold',
+    fontSize: 30,
+    fontWeight: '700',
     color: '#333',
     textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: 20,
   },
   card: {
     backgroundColor: '#fff',
     padding: 20,
-    borderRadius: 10,
+    borderRadius: 15,
     shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 10,
-    elevation: 3,
+    elevation: 5,
   },
   input: {
     borderWidth: 1,
     borderColor: '#ddd',
-    padding: 12,
-    borderRadius: 8,
+    padding: 14,
+    borderRadius: 10,
     marginBottom: 15,
     fontSize: 16,
     backgroundColor: '#f9f9f9',
+    color: '#333',
   },
   button: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#4caf50',
     padding: 15,
-    borderRadius: 8,
+    borderRadius: 10,
     alignItems: 'center',
     marginBottom: 10,
+    shadowColor: '#4caf50',
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+    elevation: 3,
   },
   buttonText: {
     color: '#fff',
@@ -122,13 +138,15 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   error: {
-    color: 'red',
+    color: '#e53935',
     marginBottom: 10,
     fontSize: 14,
+    textAlign: 'center',
   },
   success: {
-    color: 'green',
+    color: '#4caf50',
     marginBottom: 10,
     fontSize: 14,
+    textAlign: 'center',
   },
 });

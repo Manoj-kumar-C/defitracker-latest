@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import { auth } from '../../firebase';
 import { sendPasswordResetEmail } from 'firebase/auth';
-import { useNavigation } from '@react-navigation/native';  // Import useNavigation hook
+import { useNavigation } from '@react-navigation/native';
 
 export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const navigation = useNavigation(); // Access the navigation object
+  const navigation = useNavigation();
 
   const handlePasswordReset = async () => {
     if (!email) {
@@ -21,7 +21,7 @@ export default function ForgotPasswordScreen() {
     try {
       await sendPasswordResetEmail(auth, email);
       Alert.alert('Password Reset Email Sent!', 'Check your inbox to reset your password.');
-      //navigation.navigate('/auth/signin'); // Use navigation to redirect to the Signin screen
+      // navigation.navigate('/auth/signin'); // Uncomment if needed
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'There was an issue sending the password reset email. Please try again.');
@@ -32,6 +32,12 @@ export default function ForgotPasswordScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Add an image at the top */}
+      <Image
+        source={require('../../assets/images/auth/forgot-password.png')}// Replace with your image URL or local image path
+        style={styles.image}
+      />
+      
       <Text style={styles.title}>Forgot Password</Text>
       <Text style={styles.subtitle}>Enter your email to receive a password reset link.</Text>
 
@@ -64,6 +70,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
     backgroundColor: '#f7f8fa',
+  },
+  image: {
+    width: 150, // Adjust width as needed
+    height: 150, // Adjust height as needed
+    alignSelf: 'center',
+    marginBottom: 20,
   },
   title: {
     fontSize: 28,

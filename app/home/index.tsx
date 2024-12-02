@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { auth } from '../../firebase';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'expo-router';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Carousel from 'react-native-reanimated-carousel';
 
 export default function Home() {
   const router = useRouter();
   const [showNotification, setShowNotification] = useState(false);
+
+  const width = Dimensions.get('window').width;
 
   const handleSignOut = async () => {
     await signOut(auth);
@@ -31,7 +34,7 @@ export default function Home() {
             style={styles.iconButton}
             onPress={() => router.push('/settings')}
           >
-            <Icon name="user-circle" size={24} color="#fff" />
+            <Icon name="user-circle" size={30} color="black" />
           </TouchableOpacity>
 
           {/* Notification Icon */}
@@ -39,7 +42,7 @@ export default function Home() {
             style={styles.iconButton}
             onPress={handleNotificationPress}
           >
-            <Icon name="bell" size={24} color="#fff" />
+            <Icon name="bell" size={30} color="black" />
           </TouchableOpacity>
 
           {/* Notification Message */}
@@ -51,7 +54,34 @@ export default function Home() {
         </View>
       </View>
 
-      <Text style={styles.subtitle}>Finance at its Best</Text>
+      {/* Carousel Section */}
+      <View style={styles.carouselContainer}>
+        <Carousel
+          loop
+          width={width}
+          height={width / 2}
+          autoPlay={true}
+          data={[...new Array(6).keys()]}
+          scrollAnimationDuration={1000}
+          onSnapToItem={(index) => console.log('Current index:', index)}
+          renderItem={({ index }) => (
+            <View style={styles.carouselItem}>
+              <Text style={styles.carouselText}>{index}</Text>
+            </View>
+          )}
+        />
+      </View>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text style={styles.subtitle}>Our Tools</Text>
 
       {/* Two Buttons Per Row */}
       <View style={styles.buttonContainer}>
@@ -126,17 +156,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f7f8fa',
+    paddingBottom: 20, // Padding for bottom components
   },
   topBar: {
-    backgroundColor: '#000000',
+    backgroundColor: 'white',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 15,
   },
   topBarTitle: {
-    color: '#fff',
-    fontSize: 18,
+    color: 'black',
+    fontSize: 24,
     fontWeight: 'bold',
     flex: 1,  // Take up the remaining space to push icons to the right
   },
@@ -160,6 +191,21 @@ const styles = StyleSheet.create({
   notificationText: {
     color: '#fff',
     fontSize: 14,
+  },
+  carouselContainer: {
+    marginVertical: 15,
+    paddingHorizontal: 10, // Ensure spacing
+  },
+  carouselItem: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ccc',
+    borderRadius: 10,
+  },
+  carouselText: {
+    fontSize: 30,
+    color: '#fff',
   },
   subtitle: {
     fontSize: 22,
