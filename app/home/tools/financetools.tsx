@@ -59,14 +59,14 @@ export default function FinanceTools() {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.serviceButton}
-            onPress={() => router.push('/home/tools/sipcalculator')}
+            onPress={() => router.push('/home/tools/finance/SIPCalculatorScreen')}
           >
             <Icon name="calculator" size={24} color="#5DBB63" />
             <Text style={styles.buttonText}>SIP Calculator</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.serviceButton}
-            onPress={() => router.push('/home/tools/fdcalculator')}
+            onPress={() => router.push('/home/tools/finance/FDCalculatorScreen')}
           >
             <Icon name="bank" size={24} color="#5DBB63" />
             <Text style={styles.buttonText}>FD Calculator</Text>
@@ -77,14 +77,14 @@ export default function FinanceTools() {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.serviceButton}
-            onPress={() => router.push('/home/tools/emicalculator')}
+            onPress={() => router.push('/home/tools/finance/EMICalculatorScreen')}
           >
             <Icon name="credit-card" size={24} color="#5DBB63" />
             <Text style={styles.buttonText}>EMI Calculator</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.serviceButton}
-            onPress={() => router.push('/home/tools/simpleinterest')}
+            onPress={() => router.push('/home/tools/finance/SimpleIntrestScreen')}
           >
             <Icon name="percent" size={24} color="#5DBB63" />
             <Text style={styles.buttonText}>Simple Interest</Text>
@@ -95,14 +95,14 @@ export default function FinanceTools() {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.serviceButton}
-            onPress={() => router.push('/home/tools/compoundinterest')}
+            onPress={() => router.push('/home/tools/finance/CompoundIntrest')}
           >
             <Icon name="line-chart" size={24} color="#5DBB63" />
             <Text style={styles.buttonText}>Compound Interest</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.serviceButton}
-            onPress={() => router.push('/home/tools/inflation')}
+            onPress={() => router.push('/home/tools/finance/InflationCalculatorScreen')}
           >
             <Icon name="bar-chart" size={24} color="#5DBB63" />
             <Text style={styles.buttonText}>Inflation</Text>
@@ -128,7 +128,7 @@ export default function FinanceTools() {
         </View>
 
         {/* Row 5 */}
-        <View style={styles.buttonContainer}>
+        {/* <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.serviceButton}
             onPress={() => router.push('/home/tools/consulting')}
@@ -137,7 +137,7 @@ export default function FinanceTools() {
             <Text style={styles.buttonText}>Consulting</Text>
           </TouchableOpacity>
           <View style={styles.emptyButtonPlaceholder} />
-        </View>
+        </View> */}
       </View>
     </ScrollView>
   );
