@@ -113,14 +113,14 @@ export default function FinanceTools() {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.serviceButton}
-            onPress={() => router.push('/home/tools/brokerage')}
+            onPress={() => router.push('/home/tools/finance/BrokerageScreen')}
           >
             <Icon name="exchange" size={24} color="#5DBB63" />
             <Text style={styles.buttonText}>Brokerage</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.serviceButton}
-            onPress={() => router.push('/home/tools/tds')}
+            onPress={() => router.push('/home/tools/finance/TDSScreen')}
           >
             <Icon name="money" size={24} color="#5DBB63" />
             <Text style={styles.buttonText}>TDS Calculator</Text>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ScrollView, Animated } from 'react-native';
 import { auth } from '../../firebase';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'expo-router';
@@ -12,6 +12,9 @@ export default function Home() {
 
   const width = Dimensions.get('window').width;
 
+  // Animated Value for Parallax Effect
+  const scrollY = new Animated.Value(0);
+
   const handleSignOut = async () => {
     await signOut(auth);
     router.replace('/auth/signin');
@@ -22,156 +25,175 @@ export default function Home() {
   };
 
   return (
-    <ScrollView>
-    <View style={styles.container}>
-      {/* Top Bar */}
-      <View style={styles.topBar}>
-        <Text style={styles.topBarTitle}>Defi Tracker</Text>
+    <ScrollView
+      onScroll={Animated.event(
+        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+        { useNativeDriver: false }
+      )}
+      scrollEventThrottle={16}
+    >
+      <View style={styles.container}>
+        {/* Top Bar */}
+        <View style={styles.topBar}>
+          <Text style={styles.topBarTitle}>Defi Tracker</Text>
 
-        {/* Notification and Profile Icons at the Right */}
-        <View style={styles.iconsContainer}>
-          {/* Profile Button */}
+          {/* Notification and Profile Icons at the Right */}
+          <View style={styles.iconsContainer}>
+            {/* Profile Button */}
+            <TouchableOpacity
+              style={styles.iconButton}
+              onPress={() => router.push('/settings')}
+            >
+              <Icon name="user-circle" size={30} color="#5DBB63" />
+            </TouchableOpacity>
+
+            {/* Notification Icon */}
+            <TouchableOpacity
+              style={styles.iconButton}
+              onPress={handleNotificationPress}
+            >
+              <Icon name="bell" size={30} color="#5DBB63" />
+            </TouchableOpacity>
+
+            {/* Notification Message */}
+            {showNotification && (
+              <View style={styles.notificationMessage}>
+                <Text style={styles.notificationText}>You have new notifications!</Text>
+              </View>
+            )}
+          </View>
+        </View>
+
+        {/* Parallax Header */}
+        <Animated.View
+          style={[
+            styles.carouselContainer,
+            {
+              transform: [
+                {
+                  translateY: scrollY.interpolate({
+                    inputRange: [-100, 0, 100],
+                    outputRange: [50, 0, -50],
+                    extrapolate: 'clamp',
+                  }),
+                },
+              ],
+            },
+          ]}
+        >
+          <Carousel
+            loop
+            width={width}
+            height={width / 2}
+            autoPlay={true}
+            data={[...new Array(6).keys()]}
+            scrollAnimationDuration={1000}
+            onSnapToItem={(index) => console.log('Current index:', index)}
+            renderItem={({ index }) => (
+              <View style={styles.carouselItem}>
+                <Text style={styles.carouselText}>{index}</Text>
+              </View>
+            )}
+          />
+        </Animated.View>
+
+        <Text style={styles.subtitle}>Our Tools</Text>
+
+        {/* Two Buttons Per Row */}
+        <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={styles.iconButton}
-            onPress={() => router.push('/settings')}
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/budgetplanner')}
           >
-            <Icon name="user-circle" size={30} color="#5DBB63" />
+            <Icon name="calculator" size={24} color="green" />
+            <Text style={styles.buttonText}>Budget Planner</Text>
           </TouchableOpacity>
 
-          {/* Notification Icon */}
           <TouchableOpacity
-            style={styles.iconButton}
-            onPress={handleNotificationPress}
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/visualcharts')}
           >
-            <Icon name="bell" size={30} color="#5DBB63" />
+            <Icon name="pie-chart" size={24} color="green" />
+            <Text style={styles.buttonText}>Visual Charts</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/news')}
+          >
+            <Icon name="bell" size={24} color="green" />
+            <Text style={styles.buttonText}>Market News</Text>
           </TouchableOpacity>
 
-          {/* Notification Message */}
-          {showNotification && (
-            <View style={styles.notificationMessage}>
-              <Text style={styles.notificationText}>You have new notifications!</Text>
-            </View>
-          )}
+          <TouchableOpacity
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/loancalculator')}
+          >
+            <Icon name="money" size={24} color="green" />
+            <Text style={styles.buttonText}>Loan Calculator</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/creditscore')}
+          >
+            <Icon name="credit-card" size={24} color="green" />
+            <Text style={styles.buttonText}>Credit Score</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/ytchannels')}
+          >
+            <Icon name="youtube" size={24} color="green" />
+            <Text style={styles.buttonText}>YouTube Channel</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/chatwithai')}
+          >
+            <Icon name="comments" size={24} color="green" />
+            <Text style={styles.buttonText}>AI Chat Assistance</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/ytchannels')}
+          >
+            <Icon name="youtube" size={24} color="green" />
+            <Text style={styles.buttonText}>Insurance</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/chatwithai')}
+          >
+            <Icon name="comments" size={24} color="green" />
+            <Text style={styles.buttonText}>Consulting</Text>
+          </TouchableOpacity>
+          <View style={styles.emptyButtonPlaceholder} />
+        </View>
+
+        <Text style={styles.subtitle}>Our Tools</Text>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/financetools')}
+          >
+            <Icon name="comments" size={24} color="green" />
+            <Text style={styles.buttonText}>Finance Tools</Text>
+          </TouchableOpacity>
         </View>
       </View>
-
-      {/* Carousel Section */}
-      <View style={styles.carouselContainer}>
-        <Carousel
-          loop
-          width={width}
-          height={width / 2}
-          autoPlay={true}
-          data={[...new Array(6).keys()]}
-          scrollAnimationDuration={1000}
-          onSnapToItem={(index) => console.log('Current index:', index)}
-          renderItem={({ index }) => (
-            <View style={styles.carouselItem}>
-              <Text style={styles.carouselText}>{index}</Text>
-            </View>
-          )}
-        />
-      </View>
-
-      <Text style={styles.subtitle}>Our Tools</Text>
-
-      {/* Two Buttons Per Row */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/budgetplanner')}
-        >
-          <Icon name="calculator" size={24} color="green" />
-          <Text style={styles.buttonText}>Budget Planner</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/visualcharts')}
-        >
-          <Icon name="pie-chart" size={24} color="green" />
-          <Text style={styles.buttonText}>Visual Charts</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/news')}
-        >
-          <Icon name="bell" size={24} color="green" />
-          <Text style={styles.buttonText}>Market News</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/loancalculator')}
-        >
-          <Icon name="money" size={24} color="green" />
-          <Text style={styles.buttonText}>Loan Calculator</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/creditscore')}
-        >
-          <Icon name="credit-card" size={24} color="green" />
-          <Text style={styles.buttonText}>Credit Score</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/ytchannels')}
-        >
-          <Icon name="youtube" size={24} color="green" />
-          <Text style={styles.buttonText}>YouTube Channel</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/chatwithai')}
-        >
-          <Icon name="comments" size={24} color="green" />
-          <Text style={styles.buttonText}>AI Chat Assistance</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/ytchannels')}
-        >
-          <Icon name="youtube" size={24} color="green" />
-          <Text style={styles.buttonText}>Insurance</Text>
-        </TouchableOpacity>
-        
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/chatwithai')}
-        >
-          <Icon name="comments" size={24} color="green" />
-          <Text style={styles.buttonText}>Consulting</Text>
-        </TouchableOpacity>
-        <View style={styles.emptyButtonPlaceholder} />
-      </View>
-
-      <Text style={styles.subtitle}>Our Tools</Text>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/financetools')}
-        >
-          <Icon name="comments" size={24} color="green" />
-          <Text style={styles.buttonText}>Finance Tools</Text>
-        </TouchableOpacity>
-        
-      </View>
-    </View>
     </ScrollView>
   );
 }
@@ -251,26 +273,19 @@ const styles = StyleSheet.create({
   },
   serviceButton: {
     flex: 1,
-    backgroundColor: '#ffffff', // Teal background
-    padding: 15,
-    borderRadius: 10,
+    backgroundColor: '#ffffff',
+    paddingVertical: 20,
+    marginHorizontal: 5,
     alignItems: 'center',
-    marginHorizontal: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  emptyButtonPlaceholder: {
-    flex: 1,
-    marginHorizontal: 5,
+    borderRadius: 8,
+    elevation: 3,
   },
   buttonText: {
-    color: 'black',
-    fontSize: 14,
-    fontWeight: '600',
-    marginTop: 10,
-    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#333',
+  },
+  emptyButtonPlaceholder: {
+    flex: 1, // Empty space to balance out layout
   },
 });
