@@ -4,13 +4,10 @@ import { auth } from '../../../firebase';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'expo-router';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Carousel from 'react-native-reanimated-carousel';
 
-export default function Home() {
+export default function FinanceTools() {
   const router = useRouter();
   const [showNotification, setShowNotification] = useState(false);
-
-  const width = Dimensions.get('window').width;
 
   const handleSignOut = async () => {
     await signOut(auth);
@@ -23,155 +20,125 @@ export default function Home() {
 
   return (
     <ScrollView>
-    <View style={styles.container}>
-      {/* Top Bar */}
-      <View style={styles.topBar}>
-        <Text style={styles.topBarTitle}>Defi Tracker</Text>
+      <View style={styles.container}>
+        {/* Top Bar */}
+        <View style={styles.topBar}>
+          <Text style={styles.topBarTitle}>Defi Tracker</Text>
 
-        {/* Notification and Profile Icons at the Right */}
-        <View style={styles.iconsContainer}>
-          {/* Profile Button */}
+          {/* Notification and Profile Icons */}
+          <View style={styles.iconsContainer}>
+            {/* Profile Button */}
+            <TouchableOpacity
+              style={styles.iconButton}
+              onPress={() => router.push('/settings')}
+            >
+              <Icon name="user-circle" size={30} color="#5DBB63" />
+            </TouchableOpacity>
+
+            {/* Notification Icon */}
+            <TouchableOpacity
+              style={styles.iconButton}
+              onPress={handleNotificationPress}
+            >
+              <Icon name="bell" size={30} color="#5DBB63" />
+            </TouchableOpacity>
+
+            {/* Notification Message */}
+            {showNotification && (
+              <View style={styles.notificationMessage}>
+                <Text style={styles.notificationText}>You have new notifications!</Text>
+              </View>
+            )}
+          </View>
+        </View>
+
+        {/* Finance Tools Section */}
+        <Text style={styles.subtitle}>Finance Tools</Text>
+
+        {/* Row 1 */}
+        <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={styles.iconButton}
-            onPress={() => router.push('/settings')}
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/sipcalculator')}
           >
-            <Icon name="user-circle" size={30} color="#5DBB63" />
+            <Icon name="calculator" size={24} color="#5DBB63" />
+            <Text style={styles.buttonText}>SIP Calculator</Text>
           </TouchableOpacity>
-
-          {/* Notification Icon */}
           <TouchableOpacity
-            style={styles.iconButton}
-            onPress={handleNotificationPress}
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/fdcalculator')}
           >
-            <Icon name="bell" size={30} color="#5DBB63" />
+            <Icon name="bank" size={24} color="#5DBB63" />
+            <Text style={styles.buttonText}>FD Calculator</Text>
           </TouchableOpacity>
+        </View>
 
-          {/* Notification Message */}
-          {showNotification && (
-            <View style={styles.notificationMessage}>
-              <Text style={styles.notificationText}>You have new notifications!</Text>
-            </View>
-          )}
+        {/* Row 2 */}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/emicalculator')}
+          >
+            <Icon name="credit-card" size={24} color="#5DBB63" />
+            <Text style={styles.buttonText}>EMI Calculator</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/simpleinterest')}
+          >
+            <Icon name="percent" size={24} color="#5DBB63" />
+            <Text style={styles.buttonText}>Simple Interest</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Row 3 */}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/compoundinterest')}
+          >
+            <Icon name="line-chart" size={24} color="#5DBB63" />
+            <Text style={styles.buttonText}>Compound Interest</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/inflation')}
+          >
+            <Icon name="bar-chart" size={24} color="#5DBB63" />
+            <Text style={styles.buttonText}>Inflation</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Row 4 */}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/brokerage')}
+          >
+            <Icon name="exchange" size={24} color="#5DBB63" />
+            <Text style={styles.buttonText}>Brokerage</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/tds')}
+          >
+            <Icon name="money" size={24} color="#5DBB63" />
+            <Text style={styles.buttonText}>TDS Calculator</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Row 5 */}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.serviceButton}
+            onPress={() => router.push('/home/tools/consulting')}
+          >
+            <Icon name="users" size={24} color="#5DBB63" />
+            <Text style={styles.buttonText}>Consulting</Text>
+          </TouchableOpacity>
+          <View style={styles.emptyButtonPlaceholder} />
         </View>
       </View>
-
-      {/* Carousel Section */}
-      <View style={styles.carouselContainer}>
-        <Carousel
-          loop
-          width={width}
-          height={width / 2}
-          autoPlay={true}
-          data={[...new Array(6).keys()]}
-          scrollAnimationDuration={1000}
-          onSnapToItem={(index) => console.log('Current index:', index)}
-          renderItem={({ index }) => (
-            <View style={styles.carouselItem}>
-              <Text style={styles.carouselText}>{index}</Text>
-            </View>
-          )}
-        />
-      </View>
-
-      <Text style={styles.subtitle}>Our Tools</Text>
-
-      {/* Two Buttons Per Row */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/budgetplanner')}
-        >
-          <Icon name="calculator" size={24} color="green" />
-          <Text style={styles.buttonText}>Budget Planner</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/visualcharts')}
-        >
-          <Icon name="pie-chart" size={24} color="green" />
-          <Text style={styles.buttonText}>Visual Charts</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/news')}
-        >
-          <Icon name="bell" size={24} color="green" />
-          <Text style={styles.buttonText}>Market News</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/loancalculator')}
-        >
-          <Icon name="money" size={24} color="green" />
-          <Text style={styles.buttonText}>Loan Calculator</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/creditscore')}
-        >
-          <Icon name="credit-card" size={24} color="green" />
-          <Text style={styles.buttonText}>Credit Score</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/ytchannels')}
-        >
-          <Icon name="youtube" size={24} color="green" />
-          <Text style={styles.buttonText}>YouTube Channel</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/chatwithai')}
-        >
-          <Icon name="comments" size={24} color="green" />
-          <Text style={styles.buttonText}>AI Chat Assistance</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/ytchannels')}
-        >
-          <Icon name="youtube" size={24} color="green" />
-          <Text style={styles.buttonText}>Insurance</Text>
-        </TouchableOpacity>
-        
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/chatwithai')}
-        >
-          <Icon name="comments" size={24} color="green" />
-          <Text style={styles.buttonText}>Consulting</Text>
-        </TouchableOpacity>
-        <View style={styles.emptyButtonPlaceholder} />
-      </View>
-
-      <Text style={styles.subtitle}>Our Tools</Text>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.serviceButton}
-          onPress={() => router.push('/home/tools/financetools')}
-        >
-          <Icon name="comments" size={24} color="green" />
-          <Text style={styles.buttonText}>Finance Tools</Text>
-        </TouchableOpacity>
-        
-      </View>
-    </View>
     </ScrollView>
   );
 }
@@ -180,7 +147,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8F9FA',
-    paddingBottom: 20, // Padding for bottom components
   },
   topBar: {
     backgroundColor: '#ffffff',
@@ -195,7 +161,6 @@ const styles = StyleSheet.create({
     color: '#2C3E50',
     fontSize: 24,
     fontWeight: 'bold',
-    flex: 1,  // Take up the remaining space to push icons to the right
   },
   iconsContainer: {
     flexDirection: 'row',
@@ -203,8 +168,8 @@ const styles = StyleSheet.create({
   },
   iconButton: {
     padding: 10,
-    marginLeft: 15, // Add space between icons
-    backgroundColor: '#E3F2FD', // Soft blue background
+    marginLeft: 15,
+    backgroundColor: '#E3F2FD',
     borderRadius: 50,
     elevation: 3,
   },
@@ -221,21 +186,6 @@ const styles = StyleSheet.create({
     color: '#212121',
     fontSize: 14,
   },
-  carouselContainer: {
-    marginVertical: 15,
-    paddingHorizontal: 10, // Ensure spacing
-  },
-  carouselItem: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ffffff', // Soft green
-    borderRadius: 10,
-  },
-  carouselText: {
-    fontSize: 30,
-    color: 'black',
-  },
   subtitle: {
     fontSize: 22,
     fontWeight: '600',
@@ -251,15 +201,11 @@ const styles = StyleSheet.create({
   },
   serviceButton: {
     flex: 1,
-    backgroundColor: '#ffffff', // Teal background
+    backgroundColor: '#ffffff',
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
     marginHorizontal: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
     elevation: 5,
   },
   emptyButtonPlaceholder: {
@@ -267,10 +213,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   buttonText: {
-    color: 'black',
+    color: '#333',
     fontSize: 14,
     fontWeight: '600',
     marginTop: 10,
     textAlign: 'center',
   },
 });
+
